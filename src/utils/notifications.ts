@@ -40,7 +40,7 @@ export async function registerForPushNotifications(): Promise<string | null> {
   // Android channel
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
-      name: 'DDS Dashboard',
+      name: 'GroupUp',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: '#1a237e',

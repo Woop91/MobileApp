@@ -3,10 +3,10 @@
 // ============================================================================
 //
 // Handles incoming deep links:
-//   ddsdashboard://auth?token=...     → Magic link login
-//   ddsdashboard://auth/callback#...  → Google OAuth callback
-//   ddsdashboard://case/GR-001       → Open specific case
-//   ddsdashboard://profile            → Open profile
+//   groupup://auth?token=...     → Magic link login
+//   groupup://auth/callback#...  → Google OAuth callback
+//   groupup://case/GR-001       → Open specific case
+//   groupup://profile            → Open profile
 //
 // The linking config is registered in App.tsx and the handler
 // is called from RootNavigator when a deep link arrives.
@@ -30,23 +30,23 @@ export function parseDeepLink(url: string): DeepLink {
     const path = parsed.path || '';
     const params = parsed.queryParams || {};
 
-    // Magic link: ddsdashboard://auth?token=xxx
+    // Magic link: groupup://auth?token=xxx
     if (path === 'auth' && params.token) {
       return { type: 'magic_link', token: params.token as string, raw: url };
     }
 
-    // Google OAuth callback: ddsdashboard://auth/callback#access_token=xxx
+    // Google OAuth callback: groupup://auth/callback#access_token=xxx
     if (path === 'auth/callback' || path.startsWith('auth/callback')) {
       return { type: 'google_callback', raw: url };
     }
 
-    // Case deep link: ddsdashboard://case/GR-001
+    // Case deep link: groupup://case/GR-001
     if (path.startsWith('case/')) {
       const caseId = path.replace('case/', '');
       return { type: 'case', caseId, raw: url };
     }
 
-    // Profile: ddsdashboard://profile
+    // Profile: groupup://profile
     if (path === 'profile') {
       return { type: 'profile', raw: url };
     }
@@ -89,7 +89,7 @@ export function subscribeToDeepLinks(
  */
 export const linkingConfig = {
   prefixes: [
-    'ddsdashboard://',
+    'groupup://',
     Linking.createURL('/'),
   ],
   config: {

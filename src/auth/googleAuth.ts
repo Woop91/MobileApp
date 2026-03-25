@@ -22,8 +22,8 @@ WebBrowser.maybeCompleteAuthSession();
  * Steps:
  * 1. Go to Google Cloud Console → APIs & Services → Credentials
  * 2. Create OAuth 2.0 Client IDs for:
- *    - iOS (bundle ID: com.seiu509.ddsdashboard)
- *    - Android (package: com.seiu509.ddsdashboard, SHA-1 from EAS)
+ *    - iOS (bundle ID: com.seiu509.groupup)
+ *    - Android (package: com.seiu509.groupup, SHA-1 from EAS)
  *    - Web (for Expo Go development)
  * 3. Replace the placeholder IDs below
  */
@@ -48,7 +48,7 @@ export function isGoogleAuthConfigured(): boolean {
  */
 export function buildGoogleAuthUrl(): { url: string; redirectUri: string } {
   const redirectUri = makeRedirectUri({
-    scheme: 'ddsdashboard',
+    scheme: 'groupup',
     path: 'auth/callback',
   });
 

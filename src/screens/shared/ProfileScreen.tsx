@@ -240,7 +240,7 @@ export function ProfileScreen() {
           />
 
           <Text style={[styles.version, { color: colors.textSecondary }]}>
-            DDS Dashboard Mobile v1.0.0
+            GroupUp Mobile v1.0.0
           </Text>
         </Animated.View>
       </View>

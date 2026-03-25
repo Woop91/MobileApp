@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DDS Dashboard",
-    "slug": "dds-dashboard",
+    "name": "GroupUp",
+    "slug": "groupup",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.seiu509.ddsdashboard",
+      "bundleIdentifier": "com.seiu509.groupup",
       "buildNumber": "1",
       "infoPlist": {
         "NSCameraUsageDescription": "Camera access is needed to scan documents for grievance filings.",
@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a237e"
       },
-      "package": "com.seiu509.ddsdashboard",
+      "package": "com.seiu509.groupup",
       "versionCode": 1,
       "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "NOTIFICATIONS", "USE_BIOMETRIC", "USE_FINGERPRINT"]
     },
@@ -45,7 +45,7 @@
         }
       ]
     ],
-    "scheme": "ddsdashboard",
+    "scheme": "groupup",
     "extra": {
       "eas": {
         "projectId": "your-eas-project-id"

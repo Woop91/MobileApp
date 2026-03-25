@@ -1,5 +1,5 @@
 // ============================================================================
-// App.tsx - Root component for DDS Dashboard Mobile
+// App.tsx - Root component for GroupUp Mobile
 // ============================================================================
 
 import React, { useEffect, useState } from 'react';

@@ -73,7 +73,7 @@ export function LoginScreen() {
     setLoading(true);
     try {
       const { url } = buildGoogleAuthUrl();
-      const result = await WebBrowser.openAuthSessionAsync(url, 'ddsdashboard://auth/callback');
+      const result = await WebBrowser.openAuthSessionAsync(url, 'groupup://auth/callback');
 
       if (result.type === 'success' && result.url) {
         const fragment = result.url.split('#')[1] || '';
@@ -149,7 +149,7 @@ export function LoginScreen() {
             <Ionicons name="shield-checkmark" size={56} color={colors.textOnPrimary} />
           </View>
           <Animated.View style={titleAnim}>
-            <Text style={[styles.appTitle, { color: colors.textOnPrimary }]}>DDS Dashboard</Text>
+            <Text style={[styles.appTitle, { color: colors.textOnPrimary }]}>GroupUp</Text>
             <Text style={[styles.appSubtitle, { color: colors.textOnPrimary + 'bb' }]}>
               Union Steward Portal
             </Text>
