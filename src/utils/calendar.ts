@@ -34,7 +34,7 @@ async function getOrCreateCalendar(): Promise<string | null> {
     sourceId: (defaultCalendarSource as { id?: string }).id,
     source: defaultCalendarSource as Calendar.Source,
     name: CALENDAR_NAME,
-    ownerAccount: 'DDS Dashboard',
+    ownerAccount: 'GroupUp',
     accessLevel: Calendar.CalendarAccessLevel.OWNER,
   });
 

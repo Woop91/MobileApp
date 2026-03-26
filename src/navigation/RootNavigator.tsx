@@ -21,7 +21,7 @@ export function RootNavigator({ linking }: RootNavigatorProps) {
   const { isLoading, isAuthenticated, role } = useAuth();
 
   if (isLoading) {
-    return <LoadingScreen message="Starting DDS Dashboard..." />;
+    return <LoadingScreen message="Starting GroupUp..." />;
   }
 
   const isSteward = role === 'steward' || role === 'admin' || role === 'both';

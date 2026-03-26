@@ -1,7 +1,7 @@
 {
   "name": "mobile-app",
   "version": "1.0.0",
-  "description": "DDS Dashboard Mobile App - Union Steward Dashboard for iOS and Android",
+  "description": "GroupUp Mobile App - Union Steward Dashboard for iOS and Android",
   "main": "expo/AppEntry.js",
   "scripts": {
     "start": "expo start",

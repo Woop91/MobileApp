@@ -10,7 +10,7 @@ jest.mock('expo-linking', () => ({
       u.searchParams.forEach((v, k) => { queryParams[k] = v; });
       return { path, queryParams };
     } catch {
-      // Handle scheme URLs like ddsdashboard://auth?token=abc
+      // Handle scheme URLs like groupup://auth?token=abc
       const match = url.match(/^[a-z]+:\/\/(.+)/);
       if (!match) return { path: '', queryParams: {} };
       const rest = match[1];
@@ -25,7 +25,7 @@ jest.mock('expo-linking', () => ({
       return { path: pathPart, queryParams };
     }
   },
-  createURL: (path: string) => `ddsdashboard://${path}`,
+  createURL: (path: string) => `groupup://${path}`,
   getInitialURL: jest.fn().mockResolvedValue(null),
   addEventListener: jest.fn().mockReturnValue({ remove: jest.fn() }),
 }));
@@ -34,29 +34,29 @@ import { parseDeepLink } from '../src/utils/deepLink';
 
 describe('parseDeepLink', () => {
   it('parses magic link with token', () => {
-    const result = parseDeepLink('ddsdashboard://auth?token=abc123');
+    const result = parseDeepLink('groupup://auth?token=abc123');
     expect(result.type).toBe('magic_link');
     expect(result.token).toBe('abc123');
   });
 
   it('parses Google OAuth callback', () => {
-    const result = parseDeepLink('ddsdashboard://auth/callback#access_token=xyz');
+    const result = parseDeepLink('groupup://auth/callback#access_token=xyz');
     expect(result.type).toBe('google_callback');
   });
 
   it('parses case deep link', () => {
-    const result = parseDeepLink('ddsdashboard://case/GR-001');
+    const result = parseDeepLink('groupup://case/GR-001');
     expect(result.type).toBe('case');
     expect(result.caseId).toBe('GR-001');
   });
 
   it('parses profile deep link', () => {
-    const result = parseDeepLink('ddsdashboard://profile');
+    const result = parseDeepLink('groupup://profile');
     expect(result.type).toBe('profile');
   });
 
   it('returns unknown for unrecognized URLs', () => {
-    const result = parseDeepLink('ddsdashboard://something-else');
+    const result = parseDeepLink('groupup://something-else');
     expect(result.type).toBe('unknown');
   });
 
