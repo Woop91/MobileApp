@@ -61,33 +61,3 @@ export async function authenticateWithPin(pin: string): Promise<PinAuthResult> {
   };
 }
 
-/**
- * Fields that are HIDDEN in PIN-limited mode.
- * The mobile app checks auth level before displaying these.
- */
-export const PIN_RESTRICTED_FIELDS = [
-  'email',
-  'phone',
-  'address',
-  'street',
-  'city',
-  'state',
-  'zip',
-  'assignedSteward',
-  'supervisor',
-  'employeeId',
-  'cubicle',
-  'messages',
-  'notifications',
-  'contactLog',
-  'grievanceDetails',
-  'grievanceNotes',
-  'driveFolderUrl',
-] as const;
-
-/**
- * Check if a field should be visible for the current auth level.
- */
-export function isFieldVisibleForPinAuth(fieldName: string): boolean {
-  return !(PIN_RESTRICTED_FIELDS as readonly string[]).includes(fieldName);
-}

@@ -12,9 +12,10 @@ import {
   Alert,
   Switch,
 } from 'react-native';
+import Constants from 'expo-constants';
 import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, themePresets, useFadeIn, useSlideUp, useScaleIn } from '../../theme';
+import { type ThemeColors, useTheme, themePresets, useFadeIn, useSlideUp, useScaleIn } from '../../theme';
 import { useAuth } from '../../auth/AuthContext';
 import { Card, Button, LoadingScreen } from '../../components';
 import { api } from '../../api';
@@ -240,7 +241,7 @@ export function ProfileScreen() {
           />
 
           <Text style={[styles.version, { color: colors.textSecondary }]}>
-            DDS Dashboard Mobile v1.0.0
+            GroupUp! v{Constants.expoConfig?.version || '1.0.0'}
           </Text>
         </Animated.View>
       </View>
@@ -250,7 +251,7 @@ export function ProfileScreen() {
   );
 }
 
-function InfoItem({ icon, label, value, colors }: { icon: string; label: string; value: string; colors: Record<string, string> }) {
+function InfoItem({ icon, label, value, colors }: { icon: string; label: string; value: string; colors: ThemeColors }) {
   return (
     <View style={itemStyles.row}>
       <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={18} color={colors.textSecondary} />

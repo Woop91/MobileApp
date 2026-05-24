@@ -5,14 +5,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { useTheme, useFadeIn } from '../theme';
+import { useTheme, useFadeIn, type ThemeColors } from '../theme';
 
 interface StatusChipProps {
   status: string;
   size?: 'sm' | 'md';
 }
 
-const STATUS_MAP: Record<string, { colorKey: string; label?: string }> = {
+type StatusColorKey = Exclude<keyof ThemeColors, 'gradient' | 'gradientAccent'>;
+
+const STATUS_MAP: Record<string, { colorKey: StatusColorKey; label?: string }> = {
   open: { colorKey: 'statusActive' },
   active: { colorKey: 'statusActive' },
   'in progress': { colorKey: 'statusActive' },
@@ -36,7 +38,7 @@ export function StatusChip({ status, size = 'md' }: StatusChipProps) {
   const fadeStyle = useFadeIn(0, 250);
   const key = status.toLowerCase().trim();
   const mapped = STATUS_MAP[key] || { colorKey: 'textSecondary' };
-  const color = (theme.colors as Record<string, string>)[mapped.colorKey] || theme.colors.textSecondary;
+  const color = theme.colors[mapped.colorKey] || theme.colors.textSecondary;
 
   const paddingV = size === 'sm' ? 3 : 6;
   const paddingH = size === 'sm' ? 10 : 14;

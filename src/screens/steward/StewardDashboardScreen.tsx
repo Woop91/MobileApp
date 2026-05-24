@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
+import { type ThemeColors, useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
 import { useAuth } from '../../auth/AuthContext';
 import { KPICard, Card, StatusChip, LoadingScreen } from '../../components';
 import { api } from '../../api';
@@ -173,7 +173,7 @@ export function StewardDashboardScreen({ navigation }: Props) {
   );
 }
 
-const CaseItem = React.memo(function CaseItem({ caseData: c, index, colors, onPress }: { caseData: GrievanceCase; index: number; colors: Record<string, string>; onPress: () => void }) {
+const CaseItem = React.memo(function CaseItem({ caseData: c, index, colors, onPress }: { caseData: GrievanceCase; index: number; colors: ThemeColors; onPress: () => void }) {
   const staggerStyle = useStaggerItem(index, 60);
 
   return (
@@ -203,7 +203,7 @@ const CaseItem = React.memo(function CaseItem({ caseData: c, index, colors, onPr
   );
 });
 
-const TaskItem = React.memo(function TaskItem({ task: t, index, colors }: { task: TaskRecord; index: number; colors: Record<string, string> }) {
+const TaskItem = React.memo(function TaskItem({ task: t, index, colors }: { task: TaskRecord; index: number; colors: ThemeColors }) {
   const staggerStyle = useStaggerItem(index, 60);
 
   return (

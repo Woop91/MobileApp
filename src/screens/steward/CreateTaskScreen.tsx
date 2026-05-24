@@ -15,6 +15,7 @@ import {
 import { useTheme } from '../../theme';
 import { Button, Card } from '../../components';
 import { api } from '../../api';
+import { smartSubmit } from '../../utils/offlineQueue';
 
 const PRIORITIES = ['Low', 'Normal', 'High', 'Urgent'];
 
@@ -43,21 +44,24 @@ export function CreateTaskScreen({ route, navigation }: Props) {
     setSubmitting(true);
     try {
       const idemKey = `TASK_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-      const result = await api.createTask(
-        title.trim(),
-        description.trim(),
-        memberEmail.trim(),
-        priority.toLowerCase(),
-        dueDate.trim(),
-        undefined,
+      const result = await smartSubmit('dataCreateTask', {
+        title: title.trim(),
+        desc: description.trim(),
+        memberEmail: memberEmail.trim(),
+        priority: priority.toLowerCase(),
+        dueDate: dueDate.trim(),
         idemKey,
-      );
-      if (result.success) {
+      });
+      if (result.submitted) {
         Alert.alert('Task Created', 'Your task has been created.', [
           { text: 'OK', onPress: () => navigation.goBack() },
         ]);
+      } else if (result.queued) {
+        Alert.alert('Saved Offline', 'The task will be created when you reconnect.', [
+          { text: 'OK', onPress: () => navigation.goBack() },
+        ]);
       } else {
-        Alert.alert('Error', result.message || 'Failed to create task.');
+        Alert.alert('Error', 'Failed to create task.');
       }
     } catch {
       Alert.alert('Error', 'Failed to create task. Please try again.');

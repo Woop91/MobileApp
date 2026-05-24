@@ -230,6 +230,16 @@ export const themePresets: Record<string, { light: Partial<ThemeColors>; dark: P
   },
 };
 
+/** Resolve full theme colors for a named preset */
+export function getThemeColors(preset: string, isDark: boolean): ThemeColors {
+  const base = isDark ? { ...darkColors } : { ...lightColors };
+  const overrides = themePresets[preset]?.[isDark ? 'dark' : 'light'] || {};
+  return { ...base, ...overrides };
+}
+
+/** Preset names exported for external use */
+export { themePresets as THEME_PRESETS };
+
 /** Generate theme colors from an accent hue (0-360) */
 export function colorsFromHue(hue: number, isDark: boolean): Partial<ThemeColors> {
   const s = isDark ? 70 : 60;

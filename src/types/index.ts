@@ -1,5 +1,5 @@
 // ============================================================================
-// DDS Dashboard Mobile - Type Definitions
+// GroupUp! Mobile - Type Definitions
 // ============================================================================
 
 /** User roles matching the GAS web app */

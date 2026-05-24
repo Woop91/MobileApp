@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useFadeIn, useSlideUp, useStaggerItem, useScaleIn } from '../../theme';
+import { type ThemeColors, useTheme, useFadeIn, useSlideUp, useStaggerItem, useScaleIn } from '../../theme';
 import { useAuth } from '../../auth/AuthContext';
 import { SearchBar, Card, StatusChip, EmptyState, SkeletonList, SwipeableRow } from '../../components';
 import { api } from '../../api';
@@ -161,7 +161,7 @@ export function TasksScreen({ navigation }: Props) {
 }
 
 const TaskListItem = React.memo(function TaskListItem({ task: item, index, colors, getPriorityColor, onComplete, filter }: {
-  task: TaskRecord; index: number; colors: Record<string, string>;
+  task: TaskRecord; index: number; colors: ThemeColors;
   getPriorityColor: (p?: string) => string; onComplete: (id: string) => void; filter: string;
 }) {
   const staggerStyle = useStaggerItem(index, 40);

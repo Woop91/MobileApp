@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
+import { type ThemeColors, useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
 import { Card, KPICard, SkeletonDashboard } from '../../components';
 import { api } from '../../api';
 
@@ -124,7 +124,7 @@ export function InsightsScreen() {
 }
 
 function LocationRow({ location, count, index, colors }: {
-  location: string; count: number; index: number; colors: Record<string, string>;
+  location: string; count: number; index: number; colors: ThemeColors;
 }) {
   const staggerStyle = useStaggerItem(index, 50);
   return (
@@ -139,7 +139,7 @@ function LocationRow({ location, count, index, colors }: {
 }
 
 function InsightRow({ label, value, index, colors }: {
-  label: string; value: string; index: number; colors: Record<string, string>;
+  label: string; value: string; index: number; colors: ThemeColors;
 }) {
   const staggerStyle = useStaggerItem(index, 50);
   const formatted = label.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());

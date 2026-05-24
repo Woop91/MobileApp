@@ -3,6 +3,7 @@
 // ============================================================================
 
 import React, { useEffect, useState } from 'react';
+import { AppState, type AppStateStatus } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -14,6 +15,7 @@ import { getStoredApiUrl } from './src/auth/session';
 import { setApiBaseUrl } from './src/api/config';
 import { LoadingScreen, ErrorBoundary } from './src/components';
 import { linkingConfig } from './src/utils/deepLink';
+import { processQueue } from './src/utils/offlineQueue';
 
 function AppContent() {
   const { isDark } = useTheme();
@@ -21,6 +23,14 @@ function AppContent() {
 
   useEffect(() => {
     checkApiUrl();
+
+    // Replay offline queue when app returns to foreground
+    const sub = AppState.addEventListener('change', (state: AppStateStatus) => {
+      if (state === 'active') {
+        processQueue().catch(() => {});
+      }
+    });
+    return () => sub.remove();
   }, []);
 
   async function checkApiUrl() {

@@ -14,10 +14,11 @@ import {
   Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '../../theme';
+import { type ThemeColors, useTheme } from '../../theme';
 import { Button, Card, LoadingScreen } from '../../components';
 import { AttachmentPicker } from '../../components/AttachmentPicker';
 import { api } from '../../api';
+import { smartSubmit } from '../../utils/offlineQueue';
 import type { GrievanceFormOptions } from '../../types';
 import type { PickedImage } from '../../utils/imagePicker';
 
@@ -77,21 +78,29 @@ export function GrievanceFormScreen({ route, navigation }: Props) {
             const attachmentData = attachments
               .filter(a => a.base64)
               .map(a => ({ fileName: a.fileName, mimeType: a.type, base64: a.base64 }));
-            const result = await api.initiateGrievance({
-              memberEmail: memberEmail.trim().toLowerCase(),
-              issueCategory: category,
-              priority,
-              step,
-              notes: notes.trim(),
-              attachments: attachmentData.length > 0 ? attachmentData : undefined,
-            }, idemKey);
+            const result = await smartSubmit('dataInitiateGrievance', {
+              data: {
+                memberEmail: memberEmail.trim().toLowerCase(),
+                issueCategory: category,
+                priority,
+                step,
+                notes: notes.trim(),
+                attachments: attachmentData.length > 0 ? attachmentData : undefined,
+              },
+              idemKey,
+            });
 
-            if (result.success) {
-              Alert.alert('Grievance Filed', `Case ${(result.data as { grievanceId?: string })?.grievanceId || ''} has been created.`, [
+            if (result.submitted) {
+              const grievanceId = (result.data as { grievanceId?: string })?.grievanceId || '';
+              Alert.alert('Grievance Filed', `Case ${grievanceId} has been created.`, [
+                { text: 'OK', onPress: () => navigation.goBack() },
+              ]);
+            } else if (result.queued) {
+              Alert.alert('Saved Offline', 'You appear to be offline. The grievance will be filed automatically when you reconnect.', [
                 { text: 'OK', onPress: () => navigation.goBack() },
               ]);
             } else {
-              Alert.alert('Error', result.message || 'Failed to file grievance.');
+              Alert.alert('Error', 'Failed to file grievance.');
             }
           } catch {
             Alert.alert('Error', 'Failed to file grievance. Please try again.');
@@ -233,7 +242,7 @@ export function GrievanceFormScreen({ route, navigation }: Props) {
   );
 }
 
-function FormField({ label, colors, children }: { label: string; colors: Record<string, string>; children: React.ReactNode }) {
+function FormField({ label, colors, children }: { label: string; colors: ThemeColors; children: React.ReactNode }) {
   return (
     <View style={fieldStyles.container}>
       <Text style={[fieldStyles.label, { color: colors.textSecondary }]}>{label}</Text>

@@ -17,7 +17,7 @@ import {
 import Animated from 'react-native-reanimated';
 import * as WebBrowser from 'expo-web-browser';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useFadeIn, useSlideUp, useScaleIn, usePulse } from '../../theme';
+import { type ThemeColors, useTheme, useFadeIn, useSlideUp, useScaleIn, usePulse } from '../../theme';
 import { Button } from '../../components';
 import { useAuth } from '../../auth/AuthContext';
 import { buildGoogleAuthUrl, getEmailFromGoogleToken, isGoogleAuthConfigured } from '../../auth/googleAuth';
@@ -73,7 +73,7 @@ export function LoginScreen() {
     setLoading(true);
     try {
       const { url } = buildGoogleAuthUrl();
-      const result = await WebBrowser.openAuthSessionAsync(url, 'ddsdashboard://auth/callback');
+      const result = await WebBrowser.openAuthSessionAsync(url, 'groupup://auth/callback');
 
       if (result.type === 'success' && result.url) {
         const fragment = result.url.split('#')[1] || '';
@@ -149,9 +149,9 @@ export function LoginScreen() {
             <Ionicons name="shield-checkmark" size={56} color={colors.textOnPrimary} />
           </View>
           <Animated.View style={titleAnim}>
-            <Text style={[styles.appTitle, { color: colors.textOnPrimary }]}>DDS Dashboard</Text>
+            <Text style={[styles.appTitle, { color: colors.textOnPrimary }]}>GroupUp!</Text>
             <Text style={[styles.appSubtitle, { color: colors.textOnPrimary + 'bb' }]}>
-              Union Steward Portal
+              Your Union Dashboard
             </Text>
           </Animated.View>
         </Animated.View>
@@ -308,7 +308,7 @@ export function LoginScreen() {
 }
 
 function BiometricPrompt({ type, label, onPress, loading, colors }: {
-  type?: string; label?: string; onPress: () => void; loading: boolean; colors: Record<string, string>;
+  type?: string; label?: string; onPress: () => void; loading: boolean; colors: ThemeColors;
 }) {
   const pulseStyle = usePulse(!loading, 0.97, 1.03);
 
@@ -350,7 +350,7 @@ function BiometricPrompt({ type, label, onPress, loading, colors }: {
   );
 }
 
-function EmailSentView({ email, colors, onResend }: { email: string; colors: Record<string, string>; onResend: () => void }) {
+function EmailSentView({ email, colors, onResend }: { email: string; colors: ThemeColors; onResend: () => void }) {
   const scaleAnim = useScaleIn(0);
 
   return (
@@ -367,7 +367,7 @@ function EmailSentView({ email, colors, onResend }: { email: string; colors: Rec
   );
 }
 
-function FeatureItem({ icon, text, colors }: { icon: string; text: string; colors: Record<string, string> }) {
+function FeatureItem({ icon, text, colors }: { icon: string; text: string; colors: ThemeColors }) {
   return (
     <View style={featureStyles.row}>
       <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={16} color={colors.success} />

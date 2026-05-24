@@ -34,7 +34,7 @@ export const API_CONFIG = {
  * Set the API base URL at runtime (e.g., from stored config or deep link).
  * This allows the app to connect to different GAS deployments.
  */
-let _baseUrl = API_CONFIG.baseUrl;
+let _baseUrl: string = API_CONFIG.baseUrl;
 
 export function setApiBaseUrl(url: string): void {
   _baseUrl = url.replace(/\/+$/, '');

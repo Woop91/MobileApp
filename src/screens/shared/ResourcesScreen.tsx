@@ -2,7 +2,7 @@
 // ResourcesScreen - Educational content and resources hub
 // ============================================================================
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
   Linking,
+  RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../theme';
@@ -42,6 +43,7 @@ export function ResourcesScreen() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => { loadResources(); }, []);
@@ -62,6 +64,12 @@ export function ResourcesScreen() {
       setLoading(false);
     }
   }
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadResources();
+    setRefreshing(false);
+  }, []);
 
   function handleResourceClick(resource: Resource) {
     // Log the click
@@ -133,6 +141,7 @@ export function ResourcesScreen() {
       <FlatList
         data={filtered}
         keyExtractor={item => item.id || item.title}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
         contentContainerStyle={filtered.length === 0 ? styles.emptyContainer : styles.listContent}
         ListEmptyComponent={
           <EmptyState

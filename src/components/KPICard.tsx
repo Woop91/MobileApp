@@ -4,9 +4,9 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Animated, { useAnimatedProps, useDerivedValue } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useScaleIn, useCountUp } from '../theme';
+import { useTheme, useScaleIn } from '../theme';
 
 interface KPICardProps {
   label: string;
@@ -18,8 +18,6 @@ interface KPICardProps {
   delay?: number;
 }
 
-const AnimatedText = Animated.createAnimatedComponent(Text);
-
 export function KPICard({ label, value, icon, color, trend, subtitle, delay = 0 }: KPICardProps) {
   const { theme } = useTheme();
   const scaleStyle = useScaleIn(delay);
@@ -27,12 +25,7 @@ export function KPICard({ label, value, icon, color, trend, subtitle, delay = 0 
 
   const numericValue = typeof value === 'number' ? value : parseInt(String(value), 10);
   const isNumeric = !isNaN(numericValue);
-  const animatedCount = useCountUp(isNumeric ? numericValue : 0, 800, delay + 200);
-
-  const displayValue = useDerivedValue(() => {
-    if (!isNumeric) return String(value);
-    return String(Math.round(animatedCount.value));
-  });
+  const displayValue = isNumeric ? String(Math.round(numericValue)) : String(value);
 
   return (
     <Animated.View style={[scaleStyle, styles.container]}>
@@ -40,13 +33,7 @@ export function KPICard({ label, value, icon, color, trend, subtitle, delay = 0 
         <View style={[styles.iconWrap, { backgroundColor: iconColor + '15' }]}>
           <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={26} color={iconColor} />
         </View>
-        {isNumeric ? (
-          <AnimatedText style={[styles.value, { color: theme.colors.text }]}>
-            {displayValue}
-          </AnimatedText>
-        ) : (
-          <Text style={[styles.value, { color: theme.colors.text }]}>{value}</Text>
-        )}
+        <Text style={[styles.value, { color: theme.colors.text }]}>{displayValue}</Text>
         <Text style={[styles.label, { color: theme.colors.textSecondary }]}>{label}</Text>
         {subtitle && (
           <View style={styles.subtitleRow}>

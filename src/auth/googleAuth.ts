@@ -9,7 +9,7 @@
 // empty in "Execute as: Me" web apps.
 
 import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri } from 'expo-linking';
+import * as Linking from 'expo-linking';
 
 // Complete auth session after redirect
 WebBrowser.maybeCompleteAuthSession();
@@ -22,15 +22,15 @@ WebBrowser.maybeCompleteAuthSession();
  * Steps:
  * 1. Go to Google Cloud Console → APIs & Services → Credentials
  * 2. Create OAuth 2.0 Client IDs for:
- *    - iOS (bundle ID: com.seiu509.ddsdashboard)
- *    - Android (package: com.seiu509.ddsdashboard, SHA-1 from EAS)
+ *    - iOS (bundle ID: com.wardis91.groupup)
+ *    - Android (package: com.wardis91.groupup, SHA-1 from EAS)
  *    - Web (for Expo Go development)
  * 3. Replace the placeholder IDs below
  */
 export const GOOGLE_CONFIG = {
-  iosClientId: 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com',
-  androidClientId: 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com',
-  webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
+  iosClientId: '639187023001-6049tf435jhgjmdcb37mvmt9dhbhrqn3.apps.googleusercontent.com',
+  androidClientId: '639187023001-6049tf435jhgjmdcb37mvmt9dhbhrqn3.apps.googleusercontent.com',
+  webClientId: '639187023001-6049tf435jhgjmdcb37mvmt9dhbhrqn3.apps.googleusercontent.com',
   scopes: ['openid', 'email', 'profile'],
 } as const;
 
@@ -47,9 +47,8 @@ export function isGoogleAuthConfigured(): boolean {
  * Returns the auth URL that should be opened in a web browser.
  */
 export function buildGoogleAuthUrl(): { url: string; redirectUri: string } {
-  const redirectUri = makeRedirectUri({
-    scheme: 'ddsdashboard',
-    path: 'auth/callback',
+  const redirectUri = Linking.createURL('auth/callback', {
+    scheme: 'groupup',
   });
 
   const params = new URLSearchParams({

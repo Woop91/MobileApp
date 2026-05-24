@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
+import { type ThemeColors, useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
 import { useAuth } from '../../auth/AuthContext';
 import { SearchBar, StatusChip, Card, EmptyState, SkeletonList, SwipeableRow } from '../../components';
 import { api } from '../../api';
@@ -144,7 +144,7 @@ export function CasesScreen({ navigation }: Props) {
 }
 
 const CaseListItem = React.memo(function CaseListItem({ caseData: item, index, colors, navigation }: {
-  caseData: GrievanceCase; index: number; colors: Record<string, string>;
+  caseData: GrievanceCase; index: number; colors: ThemeColors;
   navigation: { navigate: (s: string, p?: Record<string, unknown>) => void };
 }) {
   const staggerStyle = useStaggerItem(index, 40);

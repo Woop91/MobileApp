@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
+import { type ThemeColors, useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
 import { Card, StatusChip, Button, GradientHeader } from '../../components';
 import { api } from '../../api';
 import { hapticLight, hapticSuccess } from '../../utils/haptics';
@@ -199,7 +199,7 @@ export function CaseDetailScreen({ route }: Props) {
                   }}
                 >
                   <Ionicons name={item.completed ? 'checkbox' : 'square-outline'} size={22} color={item.completed ? colors.success : colors.textSecondary} />
-                  <Text style={[styles.checkText, { color: colors.text }, item.completed && styles.checkTextDone]}>{item.text as string}</Text>
+                  <Text style={[styles.checkText, { color: colors.text }, item.completed === true && styles.checkTextDone]}>{item.text as string}</Text>
                 </TouchableOpacity>
               ))}
             </Card>
@@ -224,7 +224,7 @@ export function CaseDetailScreen({ route }: Props) {
   );
 }
 
-function ActivityItem({ entry, index, colors, isLast }: { entry: Record<string, unknown>; index: number; colors: Record<string, string>; isLast: boolean }) {
+function ActivityItem({ entry, index, colors, isLast }: { entry: Record<string, unknown>; index: number; colors: ThemeColors; isLast: boolean }) {
   const staggerStyle = useStaggerItem(index, 50);
 
   return (
@@ -242,7 +242,7 @@ function ActivityItem({ entry, index, colors, isLast }: { entry: Record<string, 
 }
 
 function DetailRow({ icon, label, value, colors, highlight }: {
-  icon: string; label: string; value: string; colors: Record<string, string>; highlight?: string;
+  icon: string; label: string; value: string; colors: ThemeColors; highlight?: string;
 }) {
   return (
     <View style={detailStyles.row}>

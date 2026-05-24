@@ -25,9 +25,35 @@ import { LogContactScreen } from '../screens/steward/LogContactScreen';
 import { ProfileScreen } from '../screens/shared/ProfileScreen';
 import { NotificationsScreen } from '../screens/shared/NotificationsScreen';
 import { ResourcesScreen } from '../screens/shared/ResourcesScreen';
+import type { GrievanceCase, MemberRecord } from '../types';
 
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+type StewardTabParamList = {
+  Dashboard: undefined;
+  Cases: undefined;
+  Members: undefined;
+  Tasks: undefined;
+  More: undefined;
+};
+
+type StewardStackParamList = {
+  DashboardHome: undefined;
+  CasesList: undefined;
+  MembersList: undefined;
+  TasksList: undefined;
+  MoreMenu: undefined;
+  CaseDetail: { caseId: string; caseData?: GrievanceCase };
+  MemberDetail: { member: MemberRecord };
+  LogContact: { member: MemberRecord };
+  GrievanceForm: { memberEmail?: string; memberName?: string } | undefined;
+  CreateTask: { memberEmail?: string; memberName?: string } | undefined;
+  Insights: undefined;
+  Resources: undefined;
+  Profile: undefined;
+  Notifications: undefined;
+};
+
+const Tab = createBottomTabNavigator<StewardTabParamList>();
+const Stack = createNativeStackNavigator<StewardStackParamList>();
 
 function DashboardStack() {
   const { theme } = useTheme();

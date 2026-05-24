@@ -16,7 +16,6 @@ import {
   interpolate,
   Easing,
   type SharedValue,
-  type AnimatedStyleProp,
   runOnJS,
 } from 'react-native-reanimated';
 import { useEffect, useCallback } from 'react';

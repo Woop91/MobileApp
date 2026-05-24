@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
+import { type ThemeColors, useTheme, useFadeIn, useSlideUp, useStaggerItem } from '../../theme';
 import { useAuth } from '../../auth/AuthContext';
 import { SearchBar, Card, EmptyState, SkeletonList } from '../../components';
 import { api } from '../../api';
@@ -101,7 +101,7 @@ export function MembersScreen({ navigation }: Props) {
 }
 
 const MemberListItem = React.memo(function MemberListItem({ member: item, index, colors, initials, navigation }: {
-  member: MemberRecord; index: number; colors: Record<string, string>; initials: string;
+  member: MemberRecord; index: number; colors: ThemeColors; initials: string;
   navigation: { navigate: (s: string, p?: Record<string, unknown>) => void };
 }) {
   const staggerStyle = useStaggerItem(index, 35);

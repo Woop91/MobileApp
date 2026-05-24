@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, useFadeIn, useSlideUp, useScaleIn, useStaggerItem } from '../../theme';
+import { type ThemeColors, useTheme, useFadeIn, useSlideUp, useScaleIn, useStaggerItem } from '../../theme';
 import { Card, Button, GradientHeader } from '../../components';
 import { api } from '../../api';
 import { hapticLight, hapticMedium } from '../../utils/haptics';
@@ -159,7 +159,7 @@ export function MemberDetailScreen({ route, navigation }: Props) {
   );
 }
 
-function LogEntry({ entry, index, colors, showBorder }: { entry: ContactLogEntry; index: number; colors: Record<string, string>; showBorder: boolean }) {
+function LogEntry({ entry, index, colors, showBorder }: { entry: ContactLogEntry; index: number; colors: ThemeColors; showBorder: boolean }) {
   const staggerStyle = useStaggerItem(index, 50);
   return (
     <Animated.View style={[styles.logEntry, showBorder && { borderTopColor: colors.border, borderTopWidth: StyleSheet.hairlineWidth }, staggerStyle]}>
@@ -173,7 +173,7 @@ function LogEntry({ entry, index, colors, showBorder }: { entry: ContactLogEntry
 }
 
 function InfoRow({ icon, label, value, colors, highlight }: {
-  icon: string; label: string; value: string; colors: Record<string, string>; highlight?: string;
+  icon: string; label: string; value: string; colors: ThemeColors; highlight?: string;
 }) {
   return (
     <View style={infoStyles.row}>

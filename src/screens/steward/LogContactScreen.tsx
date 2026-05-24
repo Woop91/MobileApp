@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../theme';
 import { Button, Card } from '../../components';
 import { api } from '../../api';
+import { smartSubmit } from '../../utils/offlineQueue';
 import type { MemberRecord } from '../../types';
 
 const CONTACT_TYPES = ['Phone Call', 'In Person', 'Email', 'Text/Chat', 'Virtual Meeting', 'Other'];
@@ -48,19 +49,23 @@ export function LogContactScreen({ route, navigation }: Props) {
 
     setSubmitting(true);
     try {
-      const result = await api.logMemberContact(
-        member.email,
+      const result = await smartSubmit('dataLogMemberContact', {
+        memberEmail: member.email,
         type,
-        notes.trim(),
-        duration || undefined,
-        `${member.firstName} ${member.lastName}`
-      );
-      if (result.success) {
+        notes: notes.trim(),
+        duration: duration || undefined,
+        memberName: `${member.firstName} ${member.lastName}`,
+      });
+      if (result.submitted) {
         Alert.alert('Logged', 'Contact logged successfully.', [
           { text: 'OK', onPress: () => navigation.goBack() },
         ]);
+      } else if (result.queued) {
+        Alert.alert('Saved Offline', 'Contact log will be submitted when you reconnect.', [
+          { text: 'OK', onPress: () => navigation.goBack() },
+        ]);
       } else {
-        Alert.alert('Error', result.message || 'Failed to log contact.');
+        Alert.alert('Error', 'Failed to log contact.');
       }
     } catch {
       Alert.alert('Error', 'Failed to log contact. Please try again.');

@@ -5,7 +5,7 @@
 import * as Calendar from 'expo-calendar';
 import { Platform, Alert } from 'react-native';
 
-const CALENDAR_NAME = 'DDS Grievance Deadlines';
+const CALENDAR_NAME = 'GroupUp Grievance Deadlines';
 
 /** Get or create the DDS calendar */
 async function getOrCreateCalendar(): Promise<string | null> {
@@ -34,7 +34,7 @@ async function getOrCreateCalendar(): Promise<string | null> {
     sourceId: (defaultCalendarSource as { id?: string }).id,
     source: defaultCalendarSource as Calendar.Source,
     name: CALENDAR_NAME,
-    ownerAccount: 'DDS Dashboard',
+    ownerAccount: 'GroupUp',
     accessLevel: Calendar.CalendarAccessLevel.OWNER,
   });
 
@@ -71,18 +71,3 @@ export async function addDeadlineEvent(params: {
   }
 }
 
-/** Remove a deadline event */
-export async function removeDeadlineEvent(eventId: string): Promise<boolean> {
-  try {
-    await Calendar.deleteEventAsync(eventId);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-/** Check if calendar permissions are granted */
-export async function hasCalendarPermission(): Promise<boolean> {
-  const { status } = await Calendar.getCalendarPermissionsAsync();
-  return status === 'granted';
-}
