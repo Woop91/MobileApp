@@ -96,19 +96,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [biometricCapability, setBiometricCapability] = useState<BiometricCapability | null>(null);
   const [biometricEnabled, setBiometricEnabled] = useState(false);
 
-  useEffect(() => {
-    initBiometrics();
-    checkExistingSession();
+  const loadBatchData = useCallback(async (): Promise<BatchData | null> => {
+    try {
+      const result = await api.getBatchData();
+      if (result.success && result.data) {
+        const data = result.data;
+        setBatchData(data);
+        setState(prev => ({
+          ...prev,
+          profile: data.user || prev.profile,
+          config: data.config || prev.config,
+          role: data.role || prev.role,
+        }));
+        return data;
+      }
+    } catch (err) {
+      captureError(err instanceof Error ? err : new Error(String(err)), { context: 'loadBatchData' });
+    }
+    return null;
   }, []);
 
-  async function initBiometrics() {
+  const initBiometrics = useCallback(async () => {
     const capability = await checkBiometricCapability();
     setBiometricCapability(capability);
     const enabled = await isBiometricLoginEnabled();
     setBiometricEnabled(enabled);
-  }
+  }, []);
 
-  async function checkExistingSession() {
+  const checkExistingSession = useCallback(async () => {
     try {
       const valid = await hasValidSession();
       if (!valid) {
@@ -144,27 +159,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       setState(prev => ({ ...prev, isLoading: false }));
     }
-  }
+  }, [loadBatchData]);
 
-  async function loadBatchData(): Promise<BatchData | null> {
-    try {
-      const result = await api.getBatchData();
-      if (result.success && result.data) {
-        const data = result.data;
-        setBatchData(data);
-        setState(prev => ({
-          ...prev,
-          profile: data.user || prev.profile,
-          config: data.config || prev.config,
-          role: data.role || prev.role,
-        }));
-        return data;
-      }
-    } catch (err) {
-      captureError(err instanceof Error ? err : new Error(String(err)), { context: 'loadBatchData' });
-    }
-    return null;
-  }
+  useEffect(() => {
+    initBiometrics();
+    checkExistingSession();
+  }, [initBiometrics, checkExistingSession]);
 
   // ── Google Sign-In ────────────────────────────────────────────────────
 
@@ -202,7 +202,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       captureError(err instanceof Error ? err : new Error(String(err)), { context: 'loginWithGoogle' });
     }
     return false;
-  }, []);
+  }, [loadBatchData]);
 
   // ── Magic Link Token Login ────────────────────────────────────────────
 
@@ -229,7 +229,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       captureError(err instanceof Error ? err : new Error(String(err)), { context: 'loginWithToken' });
     }
     return false;
-  }, []);
+  }, [loadBatchData]);
 
   // ── PIN Login (Limited) ───────────────────────────────────────────────
 
@@ -256,7 +256,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       captureError(err instanceof Error ? err : new Error(String(err)), { context: 'loginWithPin' });
     }
     return false;
-  }, []);
+  }, [loadBatchData]);
 
   // ── Biometric Login (Face ID / Touch ID / Fingerprint) ──────────────
 
@@ -307,7 +307,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       return { success: false, error: 'Could not verify session. Check your connection.' };
     }
-  }, []);
+  }, [loadBatchData]);
 
   // ── Enable / Disable Biometrics ─────────────────────────────────────
 
@@ -358,7 +358,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshData = useCallback(async () => {
     return loadBatchData();
-  }, []);
+  }, [loadBatchData]);
 
   // ── Field Visibility ──────────────────────────────────────────────────
 

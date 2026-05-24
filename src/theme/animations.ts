@@ -48,7 +48,7 @@ export function useFadeIn(delay = 0, duration = 400) {
 
   useEffect(() => {
     opacity.value = withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.cubic) }));
-  }, []);
+  }, [delay, duration, opacity]);
 
   const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
   return animatedStyle;
@@ -62,7 +62,7 @@ export function useSlideUp(delay = 0, distance = 30) {
 
   useEffect(() => {
     progress.value = withDelay(delay, withSpring(1, SPRING.gentle));
-  }, []);
+  }, [delay, progress]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.value, [0, 1], [0, 1]),
@@ -79,7 +79,7 @@ export function useScaleIn(delay = 0) {
 
   useEffect(() => {
     progress.value = withDelay(delay, withSpring(1, SPRING.bouncy));
-  }, []);
+  }, [delay, progress]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.value, [0, 0.5, 1], [0, 0.8, 1]),
@@ -105,11 +105,11 @@ export function usePressAnimation() {
 
   const onPressIn = useCallback(() => {
     scale.value = withSpring(0.95, SPRING.stiff);
-  }, []);
+  }, [scale]);
 
   const onPressOut = useCallback(() => {
     scale.value = withSpring(1, SPRING.snappy);
-  }, []);
+  }, [scale]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -137,7 +137,7 @@ export function usePulse(active = true, minScale = 0.92, maxScale = 1.08) {
     } else {
       scale.value = withTiming(1, TIMING.fast);
     }
-  }, [active]);
+  }, [active, maxScale, minScale, scale]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -157,7 +157,7 @@ export function useShimmer() {
       -1,
       false
     );
-  }, []);
+  }, [translateX]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(translateX.value, [-1, 0, 1], [0.4, 1, 0.4]),
@@ -177,7 +177,7 @@ export function useCountUp(targetValue: number, duration = 800, delay = 200) {
       delay,
       withTiming(targetValue, { duration, easing: Easing.out(Easing.cubic) })
     );
-  }, [targetValue]);
+  }, [animatedValue, delay, duration, targetValue]);
 
   return animatedValue;
 }
@@ -198,7 +198,7 @@ export function useRotate(active = true) {
     } else {
       rotation.value = withTiming(0, TIMING.fast);
     }
-  }, [active]);
+  }, [active, rotation]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value}deg` }],
@@ -214,7 +214,7 @@ export function useSlideInLeft(delay = 0, distance = 40) {
 
   useEffect(() => {
     progress.value = withDelay(delay, withSpring(1, SPRING.gentle));
-  }, []);
+  }, [delay, progress]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.value, [0, 1], [0, 1]),
@@ -233,7 +233,7 @@ export function useExpandCollapse(expanded: boolean, maxHeight: number) {
   useEffect(() => {
     height.value = withSpring(expanded ? maxHeight : 0, SPRING.gentle);
     opacity.value = withTiming(expanded ? 1 : 0, TIMING.normal);
-  }, [expanded, maxHeight]);
+  }, [expanded, height, maxHeight, opacity]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     height: height.value,

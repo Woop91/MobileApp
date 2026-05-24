@@ -49,16 +49,25 @@ export function ProfileScreen() {
   const actionsAnim = useSlideUp(600, 30);
 
   useEffect(() => {
-    if (!profile) {
-      api.getFullProfile().then(r => {
-        if (r.success && r.data) setFullProfile(r.data);
-      }).catch(() => {
-        // Profile fetch failed — show what we have from cached data
-      }).finally(() => {
-        setLoading(false);
-      });
+    let cancelled = false;
+
+    if (profile) {
+      setFullProfile(profile);
+      setLoading(false);
+      return () => { cancelled = true; };
     }
-  }, []);
+
+    setLoading(true);
+    api.getFullProfile().then(r => {
+      if (!cancelled && r.success && r.data) setFullProfile(r.data);
+    }).catch(() => {
+      // Profile fetch failed — show what we have from cached data
+    }).finally(() => {
+      if (!cancelled) setLoading(false);
+    });
+
+    return () => { cancelled = true; };
+  }, [profile]);
 
   function handleLogout() {
     Alert.alert('Sign Out', 'Are you sure you want to sign out?', [

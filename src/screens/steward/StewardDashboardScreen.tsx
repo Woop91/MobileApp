@@ -40,11 +40,7 @@ export function StewardDashboardScreen({ navigation }: Props) {
   const casesAnim = useSlideUp(400, 30);
   const tasksAnim = useSlideUp(550, 30);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setError(null);
     try {
       if (batchData) {
@@ -69,13 +65,17 @@ export function StewardDashboardScreen({ navigation }: Props) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [batchData]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await loadData();
     setRefreshing(false);
-  }, []);
+  }, [loadData]);
 
   if (loading) return <LoadingScreen message="Loading dashboard..." />;
 

@@ -43,9 +43,7 @@ export function CasesScreen({ navigation }: Props) {
   const headerAnim = useFadeIn(0, 300);
   const listAnim = useSlideUp(200, 20);
 
-  useEffect(() => { loadCases(); }, []);
-
-  async function loadCases() {
+  const loadCases = useCallback(async () => {
     setError(null);
     try {
       if (batchData?.cases) {
@@ -62,7 +60,9 @@ export function CasesScreen({ navigation }: Props) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [batchData]);
+
+  useEffect(() => { loadCases(); }, [loadCases]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);

@@ -37,9 +37,7 @@ export function MembersScreen({ navigation }: Props) {
 
   const headerAnim = useFadeIn(0, 300);
 
-  useEffect(() => { loadMembers(); }, []);
-
-  async function loadMembers() {
+  const loadMembers = useCallback(async () => {
     setError(null);
     try {
       if (batchData?.members) { setMembers(batchData.members); setLoading(false); return; }
@@ -48,7 +46,9 @@ export function MembersScreen({ navigation }: Props) {
     } catch {
       setError('Could not load members. Pull down to retry.');
     } finally { setLoading(false); }
-  }
+  }, [batchData]);
+
+  useEffect(() => { loadMembers(); }, [loadMembers]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);

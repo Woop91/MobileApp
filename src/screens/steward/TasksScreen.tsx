@@ -42,9 +42,7 @@ export function TasksScreen({ navigation }: Props) {
   const listAnim = useSlideUp(200, 20);
   const fabAnim = useScaleIn(400);
 
-  useEffect(() => { loadTasks(); }, [filter]);
-
-  async function loadTasks() {
+  const loadTasks = useCallback(async () => {
     try {
       if (filter === 'active' && batchData?.tasks) {
         setTasks(batchData.tasks);
@@ -56,7 +54,9 @@ export function TasksScreen({ navigation }: Props) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [batchData, filter]);
+
+  useEffect(() => { loadTasks(); }, [loadTasks]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);

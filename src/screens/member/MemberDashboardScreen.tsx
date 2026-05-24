@@ -35,9 +35,7 @@ export function MemberDashboardScreen({ navigation }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => { loadData(); }, []);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setError(null);
     try {
       if (batchData) {
@@ -61,13 +59,15 @@ export function MemberDashboardScreen({ navigation }: Props) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [batchData]);
+
+  useEffect(() => { loadData(); }, [loadData]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await loadData();
     setRefreshing(false);
-  }, []);
+  }, [loadData]);
 
   if (loading) return <LoadingScreen message="Loading your dashboard..." />;
 

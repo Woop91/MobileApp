@@ -2,7 +2,7 @@
 // CaseDetailScreen - Animated case view with gradient header and PDF export
 // ============================================================================
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -41,9 +41,8 @@ export function CaseDetailScreen({ route }: Props) {
   const notesAnim = useSlideUp(350, 30);
   const activityAnim = useSlideUp(500, 30);
 
-  useEffect(() => { if (caseId) loadDetails(); }, [caseId]);
-
-  async function loadDetails() {
+  const loadDetails = useCallback(async () => {
+    if (!caseId) return;
     setError(null);
     try {
       const [actResult, checkResult] = await Promise.all([
@@ -55,7 +54,9 @@ export function CaseDetailScreen({ route }: Props) {
     } catch {
       setError('Failed to load case details.');
     }
-  }
+  }, [caseId]);
+
+  useEffect(() => { loadDetails(); }, [loadDetails]);
 
   if (!caseInfo) {
     return (
